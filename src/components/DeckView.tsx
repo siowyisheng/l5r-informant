@@ -55,7 +55,7 @@ export const DeckView: React.FC<{
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="standard-multiline-flexible"
-          label="Decklist"
+          label="Conflict deck"
           multiline
           rowsMax="100"
           value={value}

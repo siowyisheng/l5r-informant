@@ -122,7 +122,7 @@ export const OddsView: React.FC<{
           return null
         })}
       <div style={{ marginTop: 8 }}>
-        <Button variant="outlined">Reset Seen Cards</Button>
+        <Button variant="outlined">Reset Seen Cards (not working yet)</Button>
       </div>
     </>
   )

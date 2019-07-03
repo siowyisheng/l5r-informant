@@ -9,6 +9,19 @@ function App() {
   return (
     <div className="App">
       <Helmet>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=UA-143263947-1"
+        />
+        <script>
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-143263947-1')
+          `}
+        </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -63,7 +76,7 @@ function App() {
             key={i}
             title="L5R Informant"
             features={{
-              resizable: true,
+              resizable: false,
               height: 700,
               width: 400,
             }}
@@ -72,7 +85,8 @@ function App() {
           </NewWindow>
         ))}
         <h6 className="mdl-typography--title">
-          The app opens in a pop-up. You can close this tab now.
+          Click the button to open the app in a pop-up, then you can close this
+          tab.
         </h6>
         <p>
           You may have to disable your popup blocker on this site. No ads are
