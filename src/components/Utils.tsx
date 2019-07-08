@@ -34,10 +34,8 @@ export function compute(
   const x = n_successes // x
   let Prob
   if (n <= 0 || s <= 0 || p <= 0) {
-    alert('Parameters must be positive integers')
-    Prob = 0
+    Prob = 1
   } else if (s > p || n > p) {
-    alert('m and n must be less than N')
     Prob = 0
   } else if (x < 0 || x < n + s - p) {
     Prob = 0
