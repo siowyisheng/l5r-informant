@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
@@ -5,11 +7,6 @@ import Chip from '@material-ui/core/Chip'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-    },
     veryLikely: {
       backgroundColor: '#ea9999',
     },
@@ -40,7 +37,7 @@ export const CardChip: React.FC<{
   const classes = useStyles()
   const p = !!odds && parseInt(odds, 10)
   const prob = !odds
-    ? null
+    ? 'veryUnlikely'
     : p > 83
     ? 'veryLikely'
     : p > 66
@@ -54,6 +51,8 @@ export const CardChip: React.FC<{
     : 'veryUnlikely'
   return (
     <Chip
+      css={{ cursor: 'pointer' }}
+      clickable={false}
       size="small"
       avatar={
         !!odds ? (
