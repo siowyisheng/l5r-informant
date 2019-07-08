@@ -1,13 +1,16 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 import { CardChip } from './CardChip'
 import Typography from '@material-ui/core/Typography'
 import { Deck } from './Main'
 import sumBy from 'lodash/sumBy'
 import round from 'lodash/round'
 import { compute } from './Utils'
-import { Button } from '@material-ui/core'
+import { Button, ButtonGroup } from '@material-ui/core'
+import CardsInput from './CardsInput'
+import orderBy from 'lodash/orderBy'
 // import useFetch from 'react-fetch-hook'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -15,11 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: 'flex',
       flexWrap: 'wrap',
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200,
     },
   })
 )
@@ -29,7 +27,7 @@ export const OddsView: React.FC<{
   setDeck: (deck: Deck) => void
 }> = ({ deck, setDeck }) => {
   const classes = useStyles()
-  const [cards, setCards] = React.useState('4')
+  const [cards, setCards] = React.useState('9')
   // const { isLoading, data } = useFetch('https://api.fiveringsdb.com/cards', {
   //   method: 'GET',
   // })
@@ -41,9 +39,11 @@ export const OddsView: React.FC<{
     two: String(round(100 * compute(unseenCount, 2, numCards, 0))),
     three: String(round(100 * compute(unseenCount, 3, numCards, 0))),
   }
+  const sortedDeck = orderBy(deck, ['numUnseen'], ['desc'])
   const handleUnseenCardClick = (i: number) => {
+    setCards(String(Math.max(0, numCards - 1)))
     setDeck(
-      deck.map((card, index) => {
+      sortedDeck.map((card, index) => {
         if (index === i)
           return {
             ...card,
@@ -57,7 +57,7 @@ export const OddsView: React.FC<{
 
   const handleSeenCardClick = (i: number) => {
     setDeck(
-      deck.map((card, index) => {
+      sortedDeck.map((card, index) => {
         if (index === i)
           return {
             ...card,
@@ -71,21 +71,31 @@ export const OddsView: React.FC<{
 
   return (
     <>
-      <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          id="cardsInHand"
-          label="Opp. hand size"
-          className={classes.textField}
-          value={cards}
-          onChange={e => setCards(e.target.value)}
-          margin="normal"
-        />
+      <form
+        css={{ alignItems: 'center', justifyContent: 'center' }}
+        className={classes.container}
+        noValidate
+        autoComplete="off"
+      >
+        <ButtonGroup css={{ margin: 16 }}>
+          <Button onClick={() => setCards(String(Math.max(0, numCards - 5)))}>
+            -5
+          </Button>
+          <Button onClick={() => setCards(String(Math.max(0, numCards - 1)))}>
+            -1
+          </Button>
+        </ButtonGroup>
+        <CardsInput value={cards} onChange={(val: string) => setCards(val)} />
+        <ButtonGroup css={{ margin: 16 }}>
+          <Button onClick={() => setCards(String(numCards + 1))}>+1</Button>
+          <Button onClick={() => setCards(String(numCards + 5))}>+5</Button>
+        </ButtonGroup>
       </form>
       <Typography variant="h6" component="h2" style={{ textAlign: 'center' }}>
         {`Unseen Cards ${unseenCount}`}
       </Typography>
-      {!!deck &&
-        deck.map((card, i) => {
+      {!!sortedDeck &&
+        sortedDeck.map((card, i) => {
           if (card.numUnseen >= 1) {
             const cardOdds =
               card.numUnseen === 1
@@ -108,8 +118,8 @@ export const OddsView: React.FC<{
       <Typography variant="h6" component="h2" style={{ textAlign: 'center' }}>
         {`Seen Cards ${seenCount}`}
       </Typography>
-      {!!deck &&
-        deck.map((card, i) => {
+      {!!sortedDeck &&
+        sortedDeck.map((card, i) => {
           if (card.numSeen >= 1) {
             return (
               <CardChip
