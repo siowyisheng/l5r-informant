@@ -132,7 +132,20 @@ export const OddsView: React.FC<{
           return null
         })}
       <div style={{ marginTop: 8 }}>
-        <Button variant="outlined">Reset Seen Cards (not working yet)</Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setDeck(
+              sortedDeck.map(card => ({
+                ...card,
+                numSeen: 0,
+                numUnseen: card.numUnseen + card.numSeen,
+              }))
+            )
+          }}
+        >
+          Reset All Seen Cards
+        </Button>
       </div>
     </>
   )
