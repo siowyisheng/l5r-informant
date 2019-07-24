@@ -156,7 +156,11 @@ export default function FullWidthTabs() {
           <OddsView deck={deck} setDeck={setDeck} />
         </TabContainer>
         <TabContainer dir={theme.direction}>
-          <DeckView deck={deck} setDeck={setDeck} />
+          <DeckView
+            deck={deck}
+            setDeck={setDeck}
+            goToDeck={() => setValue(0)}
+          />
         </TabContainer>
       </SwipeableViews>
     </div>

@@ -1,22 +1,36 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React, { useState } from 'react'
 import { Deck } from './Main'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
+import FormLoadDeckFromURL from './FormLoadDeckFromURL'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     button: {
-      margin: theme.spacing(1),
+      flex: '0 0 auto',
     },
     container: {
       display: 'flex',
       flexWrap: 'wrap',
+      marginBottom: 0,
     },
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 300,
+    },
+    deckUrlField: {
+      flex: '1 0 250px',
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      marginTop: theme.spacing(0),
+      marginBottom: theme.spacing(0),
+      '& .MuiFormControl-root': {
+        marginTop: 0,
+      },
     },
   })
 )
@@ -24,7 +38,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export const DeckView: React.FC<{
   deck: Deck
   setDeck: (deck: Deck) => void
-}> = ({ deck, setDeck }) => {
+  goToDeck: () => void
+}> = ({ deck, setDeck, goToDeck }) => {
   const classes = useStyles()
   const cards = deck
     .map(card => `${card.numUnseen + card.numSeen} ${card.name}`)
@@ -46,12 +61,14 @@ export const DeckView: React.FC<{
       })
       .filter(Boolean)
     setDeck(_deck as any[])
+    goToDeck()
   }
 
   return (
-    <>
+    <React.Fragment>
       {/* <label htmlFor="deckLink">Link</label>
       <input style={{ width: '300px' }} id="deckLink" type="text" /> */}
+      <FormLoadDeckFromURL />
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="standard-multiline-flexible"
@@ -64,10 +81,14 @@ export const DeckView: React.FC<{
           style={{ width: 300 }}
           margin="normal"
         />
+        <Button
+          type="submit"
+          onClick={() => handleSubmit()}
+          variant="contained"
+        >
+          Load Deck
+        </Button>
       </form>
-      <Button onClick={() => handleSubmit()} variant="contained">
-        Load Deck
-      </Button>
-    </>
+    </React.Fragment>
   )
 }

@@ -85,13 +85,9 @@ function App() {
           </NewWindow>
         ))}
         <h6 className="mdl-typography--title">
-          Click the button to open the app in a pop-up, then you can close this
-          tab.
+          You can close this tab after you start.
         </h6>
-        <p>
-          You may have to disable your popup blocker on this site. No ads are
-          served here.
-        </p>
+        <p>You may have to disable your popup blocker on this site.</p>
       </header>
     </div>
   )
