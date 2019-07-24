@@ -10,58 +10,42 @@ import {
   FormControl,
   InputLabel,
   Input,
+  Box,
 } from '@material-ui/core'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: 0,
-      width: 240,
-    },
-    input: {
-      width: 240,
-    },
-    root: {
-      flex: '1 0 250px',
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      marginTop: theme.spacing(0),
-      marginBottom: theme.spacing(0),
-      '& .MuiFormControl-marginNormal': {
-        marginTop: 0,
-      },
-    },
-  })
-)
+import useFetch from 'react-fetch-hook'
 
 const FormLoadDeckFromURL: React.FC = () => {
   const [deckUrl, setDeckUrl] = useState('')
-  const classes = useStyles()
+  const { data, isLoading } = useFetch(deckUrl, {
+    formatter: response => response.text(),
+  })
   return (
-    <form style={{ margin: 0 }} noValidate autoComplete="off">
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="deck-url">
-          Fiverings / Bushi Builder URL
-        </InputLabel>
-        <Input
-          className={classes.input}
-          id="deck-url"
-          value={deckUrl}
-          onChange={e => setDeckUrl(e.target.value)}
-        />
-      </FormControl>
-      {/* <TextField
-        id="standard-name"
-        label="Name"
-        classes={classesTextField}
-        value={deckUrl}
-        onChange={e => setDeckUrl(e.target.value)}
-        margin="normal"
-      /> */}
-      <Button type="submit" onClick={() => {}} variant="contained">
-        Load from URL
-      </Button>
-    </form>
+    <React.Fragment>
+      {`${data}`}
+      <form
+        style={{ display: 'flex', margin: 0 }}
+        noValidate
+        autoComplete="off"
+      >
+        <Box style={{ flex: '1 0 100px' }}>
+          <FormControl fullWidth={true}>
+            <InputLabel htmlFor="deck-url">
+              Fiverings / Bushi Builder URL
+            </InputLabel>
+            <Input
+              id="deck-url"
+              value={deckUrl}
+              onChange={e => setDeckUrl(e.target.value)}
+            />
+          </FormControl>
+        </Box>
+        <Box style={{ flex: '0 0 auto' }}>
+          <Button onClick={() => {}} variant="contained">
+            Load from URL
+          </Button>
+        </Box>
+      </form>
+    </React.Fragment>
   )
 }
 export default FormLoadDeckFromURL
